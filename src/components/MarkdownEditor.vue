@@ -268,19 +268,19 @@ It converts "HTML", but keep intact partial entries like "xxxHTMLyyy" and so on.
     };
 
     // Status is available at all times via Codemirror EditorView
-    const getCodemirrorStates = () => {
-      const state = view.value.state;
-      const ranges = state.selection.ranges;
-      const selected = ranges.reduce(
-        (r, range) => r + range.to - range.from,
-        0
-      );
-      const cursor = ranges[0].anchor;
-      const length = state.doc.length;
-      const lines = state.doc.lines;
-      // more state info ...
-      // return ...
-    };
+    // const getCodemirrorStates = () => {
+    //   const state = view.value.state;
+    //   const ranges = state.selection.ranges;
+    //   const selected = ranges.reduce(
+    //     (r, range) => r + range.to - range.from,
+    //     0
+    //   );
+    //   const cursor = ranges[0].anchor;
+    //   const length = state.doc.length;
+    //   const lines = state.doc.lines;
+    //   // more state info ...
+    //   // return ...
+    // };
 
     return {
       code,

@@ -15,7 +15,8 @@
     "@codemirror/language-data": "^6.1.0",
     "codemirror": "^6.0.1",
     "vue": "^3.2.45",
-    "vue-codemirror": "^6.1.1"
+    "vue-codemirror": "^6.1.1",
+    "vue3-google-login": "^2.0.12"
   },
   "devDependencies": {
     "@rushstack/eslint-patch": "^1.1.4",
