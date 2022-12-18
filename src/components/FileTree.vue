@@ -25,10 +25,17 @@ const callback: CallbackTypes.CredentialCallback = (response) => {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        Authorization: "Bearer " + response.credential,
+        Authorization: "Bearer " + btoa(response.credential),
       },
     }
-  );
+  )
+    .catch((reason) => {
+      console.log(reason);
+    })
+    .then((response) => response.json())
+    .then((data) => {
+      console.log(data);
+    });
 };
 
 // lifecycle hooks
@@ -40,6 +47,6 @@ onMounted(() => {
 <template>
   <div>
     <button @click="increment">Count is: {{ count }}</button>
-    <GoogleLogin :callback="callback" prompt />
+    <GoogleLogin :callback="callback" />
   </div>
 </template>
