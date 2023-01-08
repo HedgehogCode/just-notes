@@ -7,6 +7,7 @@ const SCOPE = "https://www.googleapis.com/auth/drive"
 
 const scriptStatus = ref("Not loaded")
 const accessToken = ref("")
+const files = ref([])
 
 // TODO only show the button if the script has loaded
 loadScript("https://accounts.google.com/gsi/client").then(() => {
@@ -27,7 +28,30 @@ function authorizeGoogle() {
 }
 
 function listFiles() {
-    
+    // const request = new XMLHttpRequest()
+    // request.addEventListener("load", (response) => {
+    //     console.log(response);
+    // });
+
+    // request.open("GET", "https://www.googleapis.com/drive/v3/files")
+
+      fetch(
+    "https://www.googleapis.com/drive/v3/files",
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + accessToken.value,
+      },
+    }
+  )
+    .catch((reason) => {
+      console.log(reason);
+    })
+    .then((response) => response.json())
+    .then((data) => {
+        files.value = data.files
+    });
 }
 </script>
 
@@ -37,5 +61,8 @@ function listFiles() {
         <button @click="authorizeGoogle()">Auth with Google</button><br/>
         Access Token: {{ accessToken }}<br/>
         <button @click="listFiles()">List Google Drive files</button><br/>
+        <ul v-for="f in files">
+            <li>{{ f.name }} ({{ f.kind }})</li>
+        </ul>
     </div>
 </template>
