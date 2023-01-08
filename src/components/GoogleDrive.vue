@@ -1,4 +1,5 @@
 <script setup lang="ts">
+/// <reference types="google.accounts" />
 import { ref } from "vue";
 import { loadScript } from "vue-plugin-load-script";
 
@@ -11,31 +12,25 @@ const files = ref([])
 
 // TODO only show the button if the script has loaded
 loadScript("https://accounts.google.com/gsi/client").then(() => {
-    scriptStatus.value = "Loaded"
+  scriptStatus.value = "Loaded"
 }).catch(() => {
-    scriptStatus.value = "Loading failed"
+  scriptStatus.value = "Loading failed"
 })
 
 function authorizeGoogle() {
-    const client = google.accounts.oauth2.initTokenClient({
-        client_id: CLIENT_ID,
-        scope: SCOPE,
-        callback: (response) => {
-            accessToken.value = response.access_token
-        },
-    });
-    client.requestAccessToken()
+  const client = google.accounts.oauth2.initTokenClient({
+    client_id: CLIENT_ID,
+    scope: SCOPE,
+    callback: (response) => {
+      accessToken.value = response.access_token
+    },
+  });
+  client.requestAccessToken()
 }
 
 function listFiles() {
-    // const request = new XMLHttpRequest()
-    // request.addEventListener("load", (response) => {
-    //     console.log(response);
-    // });
 
-    // request.open("GET", "https://www.googleapis.com/drive/v3/files")
-
-      fetch(
+  fetch(
     "https://www.googleapis.com/drive/v3/files",
     {
       method: "GET",
@@ -48,21 +43,21 @@ function listFiles() {
     .catch((reason) => {
       console.log(reason);
     })
-    .then((response) => response.json())
+    .then((response) => response?.json())
     .then((data) => {
-        files.value = data.files
+      files.value = data.files
     });
 }
 </script>
 
 <template>
-    <div>
-        {{ scriptStatus }}<br/>
-        <button @click="authorizeGoogle()">Auth with Google</button><br/>
-        Access Token: {{ accessToken }}<br/>
-        <button @click="listFiles()">List Google Drive files</button><br/>
-        <ul v-for="f in files">
-            <li>{{ f.name }} ({{ f.kind }})</li>
-        </ul>
-    </div>
+  <div>
+    {{ scriptStatus }}<br />
+    <button @click="authorizeGoogle()">Auth with Google</button><br />
+    Access Token: {{ accessToken }}<br />
+    <button @click="listFiles()">List Google Drive files</button><br />
+    <ul v-for="f in files">
+      <li>{{ f.name }} ({{ f.kind }})</li>
+    </ul>
+  </div>
 </template>
